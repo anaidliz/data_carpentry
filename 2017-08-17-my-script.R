@@ -1,5 +1,6 @@
 ## my script from data carpentry UC Merced
 ## Julie Lowndes lowndes@nceas.ucsb.edu
+## Aug 18 2017
 
 ## download data into my R project ----
 # download.file("https://ndownloader.figshare.com/files/2292169",     
@@ -77,4 +78,5 @@ x <- summary(surveys$month == 1)
 (summary(surveys$month == 2))
 
 summary(as.factor(surveys$month))
+something
 
