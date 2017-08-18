@@ -95,10 +95,33 @@ surveys %>%
   select(year, genus, species_id, weight) %>%
   filter(!is.na(weight == max(weight)))%>%
   group_by(species_id)%>% 
-  top_n(1, weight)
+  arrange(year)
 
+#Challenge 4
+surveys %>%
+  group_by(sex)%>%
+  summarize(n())
 
+## EXPORTING DATA ----
+surveys_complete <- surveys %>%
+  filter(species_id != "",
+         !is.na(weight), 
+         !is.na(hindfoot_length),
+          sex != "") #remove missing species_id, etc
 
+#Extract the most common species_id
 
+species_counts <- surveys_complete %>%
+  group_by(species_id) %>% 
+  tally %>%
+  filter( n >= 50)
+
+## Only keep the most common species
+
+surveys_comm_spp <- surveys_complete %>%
+  filter (species_id %in% species_counts$species_id)
+  
+
+write.csv()
 
 
