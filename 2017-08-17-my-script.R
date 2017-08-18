@@ -78,5 +78,6 @@ x <- summary(surveys$month == 1)
 (summary(surveys$month == 2))
 
 summary(as.factor(surveys$month))
-something
+#something
+# I'm learning a lot today
 
