@@ -122,6 +122,6 @@ surveys_comm_spp <- surveys_complete %>%
   filter (species_id %in% species_counts$species_id)
   
 
-write.csv()
+write.csv(surveys_comm_spp, file = "data_output/surveys_complete.csv")
 
 
