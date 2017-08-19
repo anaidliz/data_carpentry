@@ -125,3 +125,86 @@ surveys_comm_spp <- surveys_complete %>%
 write.csv(surveys_comm_spp, file = "data_output/surveys_complete.csv")
 
 
+##Data Visualization
+
+library(tidyverse)
+
+surveys_complete <- read.csv('data_output/surveys_complete.csv')
+
+## ggplot2
+
+ggplot(data = surveys_complete, aes(x = weight, y = hindfoot_length)) + 
+  geom_point(alpha = 0.1, aes(color = weight))
+
+## Chalenge
+## Create a scatter plot of weight over species_id
+## with the plot types showing in different colors. Is this a 
+## good way to show this type of data?
+
+ggplot(data = surveys_complete, aes(y = weight, x = species_id)) + 
+  geom_point(alpha = 0.9, aes(color = species_id)) # Alpha = 0 is completely translucent
+
+ggplot(data = surveys_complete, aes(y = weight, x = species_id)) + 
+  geom_boxplot(aes(color = species_id))+
+labs(x = "species",
+     y = "weight",
+title = "Plot")
+
+
+ggplot(data = surveys_complete, aes(y = weight, x = species_id)) + 
+  geom_col(aes(color = species_id))+
+  facet_grid(sex ~.)+ # creates two plots depending on sex (something in x and somethingn in y)
+  labs(x = "species",
+       y = "weight",
+       title = "Plot")
+
+##Time series ----
+yearly_counts <-surveys_complete %>%
+  group_by(year, species_id)%>%
+  tally
+
+ggplot(data = yearly_counts, 
+       aes(x = year, y = n, 
+           group = species_id,
+           color = species_id)) +
+geom_line()+
+  facet_wrap(~ species_id) #Gives you a plot per species
+
+yearly_sex_counts <- surveys_complete %>%
+  group_by(year, species_id, sex) %>%
+  tally
+
+ggplot(data = yearly_sex_counts, 
+       aes(x = year, y = n, color = sex)) +
+       geom_line() +
+  facet_wrap(~ species_id)
+           
+## Challenge
+## Use what you just learned to create a plot that
+## depicts how the average weight of each species
+## changes through the years.
+
+
+yearly_mean_weight <- surveys_complete %>%
+  group_by(year, species_id) %>%
+  summarize(mean_weight = mean(weight))
+  
+ggplot(data = yearly_mean_weight, 
+        aes(x = year, y = mean_weight,
+            color = species_id))+
+  geom_line()+
+    facet_wrap(~ species_id)+
+    labs(x = "year",
+         y = "mean_weight (g)")+
+    theme_bw()
+  
+my_plot <- ggplot(data = yearly_mean_weight, 
+                  aes(x = year, y = mean_weight,
+                      color = species_id))+
+  geom_line()+
+  facet_wrap(~ species_id)+
+  labs(x = "year",
+       y = "mean_weight (g)")+
+  theme_bw()
+
+ggsave("my_plot.png", my_plot, width = 15, height = 10)
